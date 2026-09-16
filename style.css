@@ -1,0 +1,156 @@
+/* ==========================================================================
+   עיצוב כללי של העמוד
+   ========================================================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0e4e8 0%, #cfd6de 100%);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   לוח המשחק (Checkers Board)
+   ========================================================================== */
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, 70px);
+    grid-template-rows: repeat(8, 70px);
+    border: 8px solid #714b20; /* מסגרת עץ ללוח */
+    border-radius: 4px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+}
+
+/* משבצת כללית */
+.square {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* צבעי המשבצות (סגנון עץ קלאסי) */
+.light {
+    background-color: #f0d9b5; /* קרם בהיר */
+}
+
+.dark {
+    background-color: #b58863; /* חום עץ */
+}
+
+/* אפקט ריחוף על משבצות כהות (שבהן המשחק מתנהל) */
+.dark:hover {
+    filter: brightness(1.05);
+}
+
+/* ==========================================================================
+   עיצוב החיילים (Game Pieces)
+   ========================================================================== */
+.piece {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* אפקט תלת-ממדי: צל חיצוני ותאורה פנימית */
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.3),
+        inset 0 -4px 6px rgba(0, 0, 0, 0.4),
+        inset 0 4px 6px rgba(255, 255, 255, 0.3);
+}
+
+/* אפקט הרמה כאשר מרחפים מעל חייל */
+.piece:hover {
+    transform: scale(1.08);
+}
+
+/* שחקן 1 - אדום עמוק */
+.player1 {
+    background: radial-gradient(circle at 35% 35%, #ff5252 0%, #b71c1c 70%);
+    border: 2px solid #7f0000;
+}
+
+/* שחקן 2 - שחור פחם */
+.player2 {
+    background: radial-gradient(circle at 35% 35%, #555555 0%, #1a1a1a 70%);
+    border: 2px solid #000000;
+}
+
+/* חריצים דקורטיביים על החיילים (כמו בדמקה אמיתית) */
+.piece::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+}
+
+.player2::after {
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   חיילי מלך (Kings)
+   ========================================================================== */
+.king {
+    /* הפיכת החריץ הפנימי לכתר זהב קטן */
+    border: 3px solid #ffd700 !important;
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        inset 0 -4px 6px rgba(0, 0, 0, 0.4),
+        inset 0 4px 6px rgba(255, 255, 255, 0.4),
+        0 0 10px rgba(255, 215, 0, 0.5); /* הילה מוזהבת */
+}
+
+/* הוספת סימון כתר (Unicode) למרכז המלך */
+.king::before {
+    content: '👑';
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   סימונים ומהלכים (Highlights & Moves)
+   ========================================================================== */
+
+/* המשבצות הצהובות שהקוד שלך מייצר עבור מהלכים אפשריים */
+.highlighted {
+    background-color: rgba(241, 196, 15, 0.75) !important; /* צהוב זוהר חצי שקוף */
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    animation: pulseHighlight 1.5s infinite alternate;
+}
+
+/* אפקט פעימה עדין למשבצות המסומנות כדי למשוך את העין */
+@keyframes pulseHighlight {
+    0% {
+        background-color: rgba(241, 196, 15, 0.65);
+    }
+    100% {
+        background-color: rgba(241, 196, 15, 0.85);
+    }
+}
